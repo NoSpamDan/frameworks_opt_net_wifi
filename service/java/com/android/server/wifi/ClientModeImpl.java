@@ -1830,9 +1830,9 @@ public class ClientModeImpl extends StateMachine {
     /**
      * Get the supported feature set synchronously
      */
+
     public long syncGetSupportedFeatures(AsyncChannel channel) {
         Message resultMsg = channel.sendMessageSynchronously(CMD_GET_SUPPORTED_FEATURES);
-        if (messageIsNull(resultMsg)) return 0;
         long supportedFeatureSet = ((Long) resultMsg.obj).longValue();
         resultMsg.recycle();
 

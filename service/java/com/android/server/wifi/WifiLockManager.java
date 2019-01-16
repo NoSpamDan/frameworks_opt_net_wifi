@@ -634,13 +634,10 @@ public class WifiLockManager {
     }
 
     private int getLowLatencyModeSupport() {
-        if (mLatencyModeSupport == LOW_LATENCY_SUPPORT_UNDEFINED) {
-            String ifaceName = mWifiNative.getClientInterfaceName();
-            if (ifaceName == null) {
-                return LOW_LATENCY_SUPPORT_UNDEFINED;
-            }
-
-            long supportedFeatures = mWifiNative.getSupportedFeatureSet(ifaceName);
+        if (mLatencyModeSupport == LOW_LATENCY_SUPPORT_UNDEFINED
+                && mClientModeImplChannel != null) {
+            long supportedFeatures =
+                    mClientModeImpl.syncGetSupportedFeatures(mClientModeImplChannel);
             if (supportedFeatures != 0) {
                 if ((supportedFeatures & WifiManager.WIFI_FEATURE_LOW_LATENCY) != 0) {
                     mLatencyModeSupport = LOW_LATENCY_SUPPORTED;
